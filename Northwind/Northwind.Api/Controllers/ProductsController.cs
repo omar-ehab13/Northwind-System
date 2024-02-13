@@ -1,8 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Northwind.Application.Features.Products.Commands.AddProduct;
+using Northwind.Application.Features.Products.Commands.DeleteProduct;
+using Northwind.Application.Features.Products.Commands.UpdateProduct;
 using Northwind.Application.Features.Products.Queries.GetAllProducts;
-using Northwind.Core.Entities;
-using Northwind.Infrastructure.RepositoryManager;
+using Northwind.Application.Features.Products.Queries.GetProductById;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,12 +15,10 @@ namespace Northwind.Api.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IRepositoryManager _repositoryManager;
 
-        public ProductsController(IMediator mediator, IRepositoryManager repositoryManager)
+        public ProductsController(IMediator mediator)
         {
             this._mediator = mediator;
-            this._repositoryManager = repositoryManager;
         }
 
         // GET: api/<ProductsController>
@@ -32,48 +32,40 @@ namespace Northwind.Api.Controllers
 
         // GET api/<ProductsController>/5
         [HttpGet("{id}")]
-        public async Task<object> Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var product = await _repositoryManager.Products
-                .FindAsync(p => p.ProductId == id, new string[] { "Category" });
+            var response = await _mediator.Send(new GetProductByIdQuery(id));
 
-            return new
-            {
-                ProductId = product.ProductId,
-                ProductName = product.ProductName,
-                CategoryName = product.Category is not null ? product.Category.CategoryName : null
-            };
+            return response.Succeeded ? Ok(response) : BadRequest(response);
         }
 
         // POST api/<ProductsController>
         [HttpPost]
-        public async Task Post([FromBody] Product model)
+        public async Task<IActionResult> Post([FromBody] AddProductCommand command)
         {
-            await _repositoryManager.Products.CreateAsync(model);
+            var response = await _mediator.Send(command);
 
-            await _repositoryManager.SaveChangesAsync();
+            return response.Succeeded ? Ok(response) : BadRequest(response);
         }
 
         // PUT api/<ProductsController>/5
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] Product model)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateProductCommand command)
         {
-            var product = await _repositoryManager.Products.GetByIdAsync(id);
+            command.Id = id;
 
-            await _repositoryManager.Products.UpdateAsync(product, model);
+            var response = await _mediator.Send(command);
 
-            await _repositoryManager.SaveChangesAsync();
+            return response.Succeeded ? Ok(response) : BadRequest(response);
         }
 
         // DELETE api/<ProductsController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var product = await _repositoryManager.Products.GetByIdAsync<int>(id);
+            var response = await _mediator.Send(new DeletProductCommand(id));
 
-            await _repositoryManager.Products.RemoveAsync(product);
-
-            await _repositoryManager.SaveChangesAsync();
+            return response.Succeeded ? Ok(response) : NotFound(response);
         }
     }
 }

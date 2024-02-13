@@ -3,7 +3,7 @@ using Northwind.Application.Features.Products.Queries.GetAllProducts;
 using Northwind.Core.Entities;
 using Northwind.Core.Helpers.MetaData;
 
-namespace Northwind.Application.Features.Products.Queries.MetaData
+namespace Northwind.Application.Features.Products.Queries._Helpers.MetaData
 {
     public class ProductMetaDataFactory : PaginationMetaDataFactory
     {

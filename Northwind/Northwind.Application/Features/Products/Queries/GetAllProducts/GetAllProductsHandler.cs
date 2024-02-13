@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Northwind.Application.Features.Products.Queries.DTOs;
-using Northwind.Application.Features.Products.Queries.MetaData;
+using Northwind.Application.Features.Products.Queries._Helpers.DTOs;
+using Northwind.Application.Features.Products.Queries._Helpers.MetaData;
 using Northwind.Application.FilterHandlers;
 using Northwind.Application.Mappings.ProductsMapping.Queries;
 using Northwind.Core.Entities;
@@ -10,7 +10,7 @@ using Northwind.Infrastructure.RepositoryManager;
 
 namespace Northwind.Application.Features.Products.Queries.GetAllProducts
 {
-    public class GetAllProductsHandler : ResponseHandler, IRequestHandler<GetAllProductsQuery, GenericResponse<List<ProductDto>>>
+    public class GetAllProductsHandler : ResponseHandler, IRequestHandler<GetAllProductsQuery, GenericResponse<List<GetAllProductsDto>>>
     {
         private readonly IRepositoryManager repositoryManager;
 
@@ -19,7 +19,7 @@ namespace Northwind.Application.Features.Products.Queries.GetAllProducts
             this.repositoryManager = repositoryManager;
         }
 
-        public async Task<GenericResponse<List<ProductDto>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<List<GetAllProductsDto>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
             var products = await repositoryManager.Products
                     .FindAllWithIncludes(new string[] { nameof(Product.Category), nameof(Product.Supplier) }, false);
@@ -31,7 +31,7 @@ namespace Northwind.Application.Features.Products.Queries.GetAllProducts
 
             products = await products.PaginateAsync(request.PageNumber, request.PageSize);
 
-            List<ProductDto> result = products.Select(p => p.ToProductDto()).ToList();
+            List<GetAllProductsDto> result = products.Select(p => p.MapToGetAllProductsDto()).ToList();
 
             return Succeeded(result, productMetaData);
         }

@@ -1,6 +1,6 @@
-﻿namespace Northwind.Application.Features.Products.Queries.DTOs
+﻿namespace Northwind.Application.Features.Products.Queries._Helpers.DTOs
 {
-    public record ProductDto(
+    public record GetAllProductsDto(
         int ProductId,
         string ProductName,
         string? Category,

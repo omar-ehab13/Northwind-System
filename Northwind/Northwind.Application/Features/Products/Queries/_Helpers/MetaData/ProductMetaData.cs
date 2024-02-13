@@ -1,6 +1,6 @@
 ﻿using Northwind.Core.Helpers.MetaData;
 
-namespace Northwind.Application.Features.Products.Queries.MetaData
+namespace Northwind.Application.Features.Products.Queries._Helpers.MetaData
 {
     public class ProductMetaData : PaginationMetaData
     {
