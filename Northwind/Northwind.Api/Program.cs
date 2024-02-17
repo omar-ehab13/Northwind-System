@@ -1,5 +1,5 @@
 using NLog;
-using Northwind.Api.Extensions;
+using Northwind.Api.MiddleWares;
 using Northwind.Application;
 using Northwind.Core;
 using Northwind.Core.Helpers.Logger;
@@ -29,7 +29,8 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 var logger = app.Services.GetRequiredService<ILoggerManager>();
 
-app.ConfigureExceptionHandler(logger);
+//app.ConfigureExceptionHandler(logger);
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

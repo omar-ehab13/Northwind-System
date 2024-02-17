@@ -1,4 +1,4 @@
-﻿using Northwind.Application.Features.Products.Queries.GetAllProducts;
+﻿using Northwind.Application.Features.ProductsFeature.Products.Queries.GetAllProducts;
 using Northwind.Application.Filters.ProductsFilters;
 using Northwind.Core.Entities;
 using Northwind.Core.Extensions;

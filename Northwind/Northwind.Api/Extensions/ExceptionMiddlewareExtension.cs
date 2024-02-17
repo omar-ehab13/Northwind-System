@@ -21,10 +21,10 @@ namespace Northwind.Api.Extensions
                     {
                         logger.LogError($"Something went wrong: {contextFeature.Error}");
 
-                        await context.Response.WriteAsync(new ErrorDetails()
+                        await context.Response.WriteAsync(new ErrorDetails
                         {
                             StatusCode = context.Response.StatusCode,
-                            Message = "Internal Server Error"
+                            Message = "Interanl Server Error"
                         }.ToString());
                     }
                 });

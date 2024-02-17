@@ -1,4 +1,4 @@
-﻿using Northwind.Application.Features.Products.Commands.AddProduct;
+﻿using Northwind.Application.Features.ProductsFeature.Products.Commands.AddProduct;
 using Northwind.Core.Entities;
 
 namespace Northwind.Application.Mappings.ProductsMapping.Commands
@@ -13,6 +13,11 @@ namespace Northwind.Application.Mappings.ProductsMapping.Commands
                 CategoryId = category.CategoryId,
                 SupplierId = supplier.SupplierId,
                 UnitPrice = addProductCommand.UnitPrice,
+                QuantityPerUnit = addProductCommand.QuantityPerUnit,
+                UnitsInStock = addProductCommand.UnitsInStock,
+                UnitsOnOrder = addProductCommand.UnitsOnOrder,
+                ReorderLevel = addProductCommand.ReorderLevel,
+                Discontinued = addProductCommand.Discontinued
             };
         }
     }

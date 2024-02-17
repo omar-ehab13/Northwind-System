@@ -1,4 +1,5 @@
-﻿using Northwind.Application.Features.Products.Queries._Helpers.DTOs;
+﻿using Northwind.Application.Features.ProductsFeature.Products.Queries.GetAllProducts;
+using Northwind.Application.Features.ProductsFeature.Products.Queries.GetProductById;
 using Northwind.Core.Entities;
 
 namespace Northwind.Application.Mappings.ProductsMapping.Queries
@@ -13,13 +14,13 @@ namespace Northwind.Application.Mappings.ProductsMapping.Queries
             if (category == null || supplier == null) throw new NullReferenceException("Category or Supplier not included in produt data");
 
             return new GetAllProductsDto
-            (
-                ProductId: product.ProductId,
-                ProductName: product.ProductName,
-                Category: category.CategoryName,
-                Supplier: supplier.CompanyName,
-                UintPrice: product.UnitPrice
-            );
+            {
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                CategoryName = category.CategoryName,
+                SupplierName = supplier.CompanyName,
+                UnitPrice = product.UnitPrice
+            };
         }
 
         public static GetProductByIdDto MapToGetProductByIdDto(this Product product)
