@@ -7,7 +7,7 @@ namespace Northwind.Core.Extensions
     public static class IQueryableSortExtension
     {
         public static async Task<IQueryable<T>>
-            SortAsync<T>(this IQueryable<T> source, string orderByQueryString, string defaultOrderBy, Type type)
+            SortAsync<T>(this IQueryable<T> source, string? orderByQueryString, string defaultOrderBy, Type type)
         {
             if (string.IsNullOrEmpty(orderByQueryString))
                 return await Task.FromResult(source.OrderBy(defaultOrderBy));

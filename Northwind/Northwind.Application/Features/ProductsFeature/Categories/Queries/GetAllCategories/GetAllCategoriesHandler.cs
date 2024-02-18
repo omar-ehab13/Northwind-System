@@ -20,7 +20,7 @@ namespace Northwind.Application.Features.ProductsFeature.Categories.Queries.GetA
 
         public async Task<GenericResponse<List<GetAllCategoriesDto>>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
-            var categories = await repositoryManager.Categories.GetAllAsync();
+            var categories = await repositoryManager.Categories.GetAllAsync(trackChanges: false);
 
             categories = await new CategoryFilterHandler(repositoryManager).FilterAsync(categories, request);
 
@@ -28,7 +28,7 @@ namespace Northwind.Application.Features.ProductsFeature.Categories.Queries.GetA
 
             categories = await categories.PaginateAsync(request.PageNumber, request.PageSize);
 
-            List<GetAllCategoriesDto> result = categories.Select(c => c.MapToGetAllCategoriesDto()).ToList();
+            var result = categories.Select(c => c.MapToGetAllCategoriesDto()).ToList();
 
             return Succeeded(result, categoryMetaData);
         }

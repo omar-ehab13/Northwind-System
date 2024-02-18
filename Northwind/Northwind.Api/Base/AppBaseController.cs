@@ -16,7 +16,7 @@ namespace Northwind.Api.Base
             this._mediator = mediator;
         }
 
-        protected ObjectResult NewResult<T>(GenericResponse<T> response)
+        protected IActionResult NewResult<T>(GenericResponse<T> response)
         {
             switch (response.StatusCode)
             {
@@ -34,6 +34,8 @@ namespace Northwind.Api.Base
                     return new AcceptedResult(string.Empty, response);
                 case HttpStatusCode.UnprocessableEntity:
                     return new UnprocessableEntityObjectResult(response);
+                case HttpStatusCode.NoContent:
+                    return new OkObjectResult(response);
                 default:
                     return new BadRequestObjectResult(response);
             }

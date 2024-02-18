@@ -19,5 +19,14 @@ namespace Northwind.Application.Services
 
             return supplier != null;
         }
+
+        public async Task<bool> IsNameExistsExcept(string companyName, int supplierId)
+        {
+            // I check in all company names except provided supplier (by supplier id)
+            var supplier = await repositoryManager.Suppliers
+                .FindAsync(s => s.CompanyName.ToLower() == companyName.ToLower() && s.SupplierId != supplierId, trackChanges: false);
+
+            return supplier != null;
+        }
     }
 }

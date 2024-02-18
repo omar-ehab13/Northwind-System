@@ -16,6 +16,8 @@ namespace Northwind.Application
 
             services.AddMediatR(c => c.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPiplineBehavior<,>));

@@ -15,7 +15,7 @@ namespace Northwind.Core.Extensions
 
     public static class IQueryableSearchExtension
     {
-        public static async Task<IQueryable<T>> SearchAsync<T>(this IQueryable<T> query, string searchTerm, string[] searchFields)
+        public static async Task<IQueryable<T>> SearchAsync<T>(this IQueryable<T> query, string? searchTerm, string[] searchFields)
         {
             if (string.IsNullOrEmpty(searchTerm) || searchFields == null || searchFields.Length == 0)
                 return await Task.FromResult(query);
