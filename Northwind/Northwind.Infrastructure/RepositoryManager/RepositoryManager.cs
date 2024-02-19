@@ -1,4 +1,5 @@
-﻿using Northwind.Core.Helpers.Logger;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using Northwind.Core.Helpers.Logger;
 using Northwind.Infrastructure.Contracts;
 using Northwind.Infrastructure.Data;
 using Northwind.Infrastructure.Repositories;
@@ -37,6 +38,11 @@ namespace Northwind.Infrastructure.RepositoryManager
         public async Task<int> SaveChangesAsync()
         {
             return await context.SaveChangesAsync();
+        }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await context.Database.BeginTransactionAsync();
         }
     }
 }

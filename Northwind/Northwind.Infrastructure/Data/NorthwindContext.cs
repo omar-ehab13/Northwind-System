@@ -1,19 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Northwind.Core.Entities;
+using Northwind.Core.Entities.Identity;
 using Northwind.Core.Views;
+using Northwind.Infrastructure.Data.Configurations.Identity;
 using System.Reflection;
 
 namespace Northwind.Infrastructure.Data;
 
-public class NorthwindContext : DbContext
+public class NorthwindContext : IdentityDbContext<NorthwindUser>
 {
-    public NorthwindContext()
-    {
-    }
-
     public NorthwindContext(DbContextOptions<NorthwindContext> options)
         : base(options)
     {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyNorthwindIdentityConfiguration();
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
     public virtual DbSet<AlphabeticalListOfProduct> AlphabeticalListOfProducts { get; set; }
@@ -70,8 +75,4 @@ public class NorthwindContext : DbContext
 
     public virtual DbSet<Territory> Territories { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-    }
 }

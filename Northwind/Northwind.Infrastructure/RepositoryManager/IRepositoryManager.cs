@@ -1,4 +1,5 @@
-﻿using Northwind.Infrastructure.Contracts;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using Northwind.Infrastructure.Contracts;
 
 namespace Northwind.Infrastructure.RepositoryManager
 {
@@ -9,5 +10,6 @@ namespace Northwind.Infrastructure.RepositoryManager
         ISupplierRepository Suppliers { get; }
 
         Task<int> SaveChangesAsync();
+        Task<IDbContextTransaction> BeginTransactionAsync();
     }
 }

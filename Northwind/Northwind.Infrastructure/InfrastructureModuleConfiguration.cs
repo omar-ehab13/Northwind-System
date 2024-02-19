@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Northwind.Core.Entities.Identity;
 using Northwind.Infrastructure.Data;
 using Northwind.Infrastructure.RepositoryManager;
 
@@ -14,6 +16,15 @@ namespace Northwind.Infrastructure
             {
                 options.UseSqlServer(configuration.GetConnectionString("northwindContext"));
             });
+
+            services.AddIdentity<NorthwindUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = false;
+            })
+              .AddEntityFrameworkStores<NorthwindContext>()
+              .AddDefaultUI()
+              .AddDefaultTokenProviders();
+
 
             services.AddScoped<IRepositoryManager, RepositoryManager.RepositoryManager>();
 
