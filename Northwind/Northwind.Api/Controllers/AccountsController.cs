@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Api.Base;
 using Northwind.Application.Features.AuthFeature.Auth.Commands.Login;
+using Northwind.Application.Features.AuthFeature.Auth.Queries;
 using Northwind.Application.Features.AuthFeature.Users.Commands.AddUser;
 using Northwind.Application.Features.AuthFeature.Users.Commands.ChangePassword;
 using Northwind.Application.Features.AuthFeature.Users.Commands.DeleteUser;
 using Northwind.Application.Features.AuthFeature.Users.Commands.UpdateUser;
+using Northwind.Application.Services.Contracts;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,9 +17,11 @@ namespace Northwind.Api.Controllers
     [ApiController]
     public class AccountsController : AppBaseController
     {
-        public AccountsController(IMediator mediator) : base(mediator)
-        {
+        private readonly IEmailService emailService;
 
+        public AccountsController(IMediator mediator, IEmailService emailService) : base(mediator)
+        {
+            this.emailService = emailService;
         }
 
         // GET: api/<AccountsContraoller>
@@ -77,6 +81,14 @@ namespace Northwind.Api.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             var response = await _mediator.Send(new DeleteUserCommand(id));
+
+            return NewResult(response);
+        }
+
+        [HttpGet("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailQuery query)
+        {
+            var response = await _mediator.Send(query);
 
             return NewResult(response);
         }

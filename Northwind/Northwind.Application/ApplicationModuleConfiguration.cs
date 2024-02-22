@@ -19,7 +19,7 @@ namespace Northwind.Application
         {
             services.AddServicesDependencyInjectionConfiguration();
 
-            services.ConfigureJWT(configuration);
+            services.AddJwtConfiguration(configuration);
 
             services.AddMediatR(c => c.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
@@ -37,11 +37,12 @@ namespace Northwind.Application
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ISupplierService, SupplierService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IEmailService, EmailService>();
 
             return services;
         }
 
-        public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
+        public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtOptions = new JwtOptions();
 
@@ -71,6 +72,15 @@ namespace Northwind.Application
                    ValidateLifetime = jwtOptions.ValidateLifeTime,
                };
            });
+        }
+
+        public static void AddEmailConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            var emailConfig = new EmailConfig();
+
+            configuration.GetSection(nameof(EmailConfig)).Bind(emailConfig);
+
+            services.AddSingleton(emailConfig);
         }
     }
 }

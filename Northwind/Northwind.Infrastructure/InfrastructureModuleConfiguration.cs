@@ -19,7 +19,7 @@ namespace Northwind.Infrastructure
 
             services.AddIdentity<NorthwindUser, IdentityRole>(options =>
             {
-                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedEmail = true;
             })
               .AddEntityFrameworkStores<NorthwindContext>()
               .AddDefaultUI()

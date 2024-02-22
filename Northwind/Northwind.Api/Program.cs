@@ -21,6 +21,7 @@ LogManager.Setup().LoadConfigurationFromFile(Path.Combine(Directory.GetCurrentDi
 builder.Services.AddInfrastructureConfiguration(builder.Configuration);
 builder.Services.AddCoreModuleConfiguration();
 builder.Services.AddApplicationModuleConfiguration(builder.Configuration);
+builder.Services.AddEmailConfiguration(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
