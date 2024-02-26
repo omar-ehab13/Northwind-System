@@ -1,0 +1,109 @@
+﻿@using Northwind.Application.Features.ProductsFeature.Products.Queries.GetAllProducts.MetaData
+@using Northwind.Application.Features.ProductsFeature.Products.Queries.GetAllProducts
+@model GenericResponse<List<GetAllProductsDto>>
+
+@{
+    ViewData["Title"] = "Index";
+
+    var categories = ViewBag.Categories as List<string>;
+    var suppliers = ViewBag.Suppliers as List<string>;
+
+    var category = ViewContext.HttpContext.Request.Query["category"];
+    var supplier = ViewContext.HttpContext.Request.Query["supplier"];
+    var search = ViewContext.HttpContext.Request.Query["search"];
+}
+
+<form asp-action="Index" method="get">
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="category">Category Name:</label>
+            <select name="category" class="form-control">
+                <option value="@category">@category</option>
+                @foreach (var c in categories)
+                {
+                    <option value="@c">@c</option>
+                }
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="supplier">Supplier Name:</label>
+            <select name="supplier" class="form-control">
+                <option value="@supplier">@supplier</option>
+                @foreach(var s in suppliers)
+                {
+                    <option value="@s">@s</option>
+                }
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="search">Search:</label>
+            <input type="text" name="search" class="form-control" value="@search" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Product Name</th>
+            <th>Category Name</th>
+            <th>Supplier Name</th>
+            <th>Unit Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.Data!)
+        {
+            <tr>
+                <td>@product.ProductId</td>
+                <td>@product.ProductName</td>
+                <td>@product.CategoryName</td>
+                <td>@product.SupplierName</td>
+                <td>@product.UnitPrice</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var meta = Model.Meta as ProductMetaData;
+
+    int totalPages = meta!.TotalPages;
+    int pageSize = meta.PageSize;
+    int pageNumber = meta.CurrentPage;
+
+    var prevPage = pageNumber > 1 ? pageNumber - 1 : 1;
+    var nextPage = pageNumber < totalPages ? pageNumber + 1 : totalPages;
+
+    var routeData = new Dictionary<string, string?>();
+    routeData.Add("category", category);
+    routeData.Add("supplier", supplier);
+    routeData.Add("search", search);
+}
+
+<nav>
+    <ul class="pagination">
+        <li class="page-item @(pageNumber == 1 ? "disabled" : "")">
+            <a class="page-link" asp-controller="Products" asp-action="Index" 
+            asp-route-pageNumber="1" asp-route-pageSize="@pageSize" asp-all-route-data="routeData">&laquo;</a>
+        </li>
+        <li class="page-item @(pageNumber == 1 ? "disabled" : "")">
+            <a class="page-link" asp-controller="Products" asp-action="Index" asp-all-route-data="routeData" asp-route-pageNumber="@prevPage" asp-route-pageSize="@pageSize">Previous</a>
+        </li>
+        @for (var i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(pageNumber == i ? "active" : "")">
+                <a class="page-link" asp-controller="Products" asp-action="Index" asp-all-route-data="routeData" asp-route-pageNumber="@i" asp-route-pageSize="@pageSize">@i</a>
+            </li>
+        }
+        <li class="page-item @(pageNumber == totalPages ? "disabled" : "")">
+            <a class="page-link" asp-controller="Products" asp-action="Index" asp-all-route-data="routeData" asp-route-pageNumber="@nextPage" asp-route-pageSize="@pageSize">Next</a>
+        </li>
+        <li class="page-item @(pageNumber == totalPages ? "disabled" : "")">
+            <a class="page-link" asp-controller="Products" asp-action="Index" asp-all-route-data="routeData" asp-route-pageNumber="@totalPages" asp-route-pageSize="@pageSize">&raquo;</a>
+        </li>
+    </ul>
+</nav>
+

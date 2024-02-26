@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Northwind.Application.Features.ProductsFeature.Products.Queries.GetAllProducts.MetaData;
-using Northwind.Application.Features.ProductsFeature.Products.Queries.GetProductById;
 using Northwind.Application.FilterHandlers;
 using Northwind.Application.Mappings.ProductsMapping.Queries;
 using Northwind.Core.Entities;
