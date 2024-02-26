@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Application.Features.ProductsFeature.Categories.Queries.GetAllCategoriesName;
+using Northwind.Application.Features.ProductsFeature.Products.Commands.AddProduct;
 using Northwind.Application.Features.ProductsFeature.Products.Queries.GetAllProducts;
 using Northwind.Application.Features.ProductsFeature.Suppliers.Queries.GetAllSuppliersNames;
 using Northwind.MVC.Base;
@@ -46,11 +47,16 @@ namespace Northwind.MVC.Controllers
         // POST: ProductsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(AddProductCommand command)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var response = await _mediator.Send(command);
+
+                if (response.Succeeded)
+                    return RedirectToAction(nameof(Index));
+
+                return View();
             }
             catch
             {
