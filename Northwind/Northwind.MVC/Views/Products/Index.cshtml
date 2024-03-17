@@ -16,8 +16,8 @@
 <a asp-action="Create" asp-controller="Products" class="btn btn-primary">Add New Product</a>
 
 <form asp-action="Index" method="get">
-    <div class="form-row">
-        <div class="form-group col-md-3">
+    <div class="row form-row">
+        <div class="form-group col">
             <label for="category">Category Name:</label>
             <select name="category" class="form-control">
                 <option value="@category">@category</option>
@@ -27,7 +27,7 @@
                 }
             </select>
         </div>
-        <div class="form-group col-md-3">
+        <div class="form-group col">
             <label for="supplier">Supplier Name:</label>
             <select name="supplier" class="form-control">
                 <option value="@supplier">@supplier</option>
@@ -37,10 +37,10 @@
                 }
             </select>
         </div>
-        <div class="form-group col-md-3">
+        <div class="form-group col">
             <label for="search">Search:</label>
             <input type="text" name="search" class="form-control" value="@search" />
-        </div>
+            </div>
     </div>
     <button type="submit" class="btn btn-primary">Filter</button>
 </form>
@@ -53,6 +53,7 @@
             <th>Category Name</th>
             <th>Supplier Name</th>
             <th>Unit Price</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -64,6 +65,10 @@
                 <td>@product.CategoryName</td>
                 <td>@product.SupplierName</td>
                 <td>@product.UnitPrice</td>
+                <td>
+                    <a href='@Url.Action("Edit", "Products", new { id = product.ProductId})' class="btn btn-primary">Edit</a>
+                    <a href="#" class="btn btn-danger">Delete</a>
+                </td>
             </tr>
         }
     </tbody>

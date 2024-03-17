@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Application.Features.ProductsFeature.Categories.Queries.GetAllCategoriesName;
 using Northwind.Application.Features.ProductsFeature.Products.Commands.AddProduct;
+using Northwind.Application.Features.ProductsFeature.Products.Commands.UpdateProduct;
 using Northwind.Application.Features.ProductsFeature.Products.Queries.GetAllProducts;
+using Northwind.Application.Features.ProductsFeature.Products.Queries.GetProductById;
 using Northwind.Application.Features.ProductsFeature.Suppliers.Queries.GetAllSuppliersNames;
 using Northwind.MVC.Base;
 
@@ -65,15 +67,20 @@ namespace Northwind.MVC.Controllers
         }
 
         // GET: ProductsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var response = await _mediator.Send(new GetProductByIdQuery(id));
+
+            if (response.Succeeded)
+                return View(response.Data);
+
+            return NotFound();
         }
 
         // POST: ProductsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, UpdateProductCommand command)
         {
             try
             {
